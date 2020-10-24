@@ -1,6 +1,7 @@
 import {Request, Response, query} from 'express';
 import pool from '../database';
 
+
 class TeamsController{
   public async list (req: Request, res: Response) {
     await pool.query('SELECT * FROM teams', function(err, result, fields) {

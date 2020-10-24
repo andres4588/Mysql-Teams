@@ -1,8 +1,13 @@
 import express, {Application} from 'express';
-//import indexRoutes from './routes/indexRoutes';
+import indexRoutes from './routes/indexRoutes';
 import teamsRoutes from './routes/teamsRoutes';
+import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 import morgan from 'morgan';
 import cors from 'cors';
+import helmet from 'helmet';
+import dotenv from 'dotenv'
+dotenv.config();
 
 
 class Server {
@@ -16,12 +21,15 @@ class Server {
         this.app.set('port', process.env.PORT || 3000);
         this.app.use(morgan('dev'));
         this.app.use(cors());
+        this.app.use(helmet())
         this.app.use(express.json());
         this.app.use(express.urlencoded(({extended: false})));
     }
     routes(): void{
         this.app.use('/api/teams',teamsRoutes);
-        //this.app.use(indexRoutes);
+        this.app.use('/api/users',userRoutes);
+        this.app.use(indexRoutes);
+        this.app.use('/api/auth',authRoutes);
     }
     start(): void{
         this.app.listen(this.app.get('port'), ()=>{
